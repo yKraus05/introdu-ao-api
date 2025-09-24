@@ -154,10 +154,11 @@ h4 {
                 })
                 .catch(error => chamaGatinho())
                 .finally(() => console.log('Requisição finalizada'));
+                alert("Requisição finalizada")
             //pegando o elemento pelo ID e falando q o texto contido é = resultado
             document.getElementById('resultado').textContent = resultado;
             
-            function chamaGatinho(){
+            function chamaGatinho(){ 
                 fetch("https://api.thecatapi.com/v1/images/search")
                     .then(res => res.json())
                     .then(data => {
@@ -166,6 +167,7 @@ h4 {
                     })
                     .catch(error => console.error('Erro ao criar post:', error))
                     .finally(() => console.log('Requisição finalizada'));
+                    alert("Requisição finalizada")
             }
             
             }
@@ -197,6 +199,7 @@ h4 {
                     })
                     .catch(error => console.error('Erro ao criar post:', error))
                     .finally(() => console.log('Requisição finalizada'));
+                    alert("Requisição finalizada")
             }else{
                 fetch("https://pokeapi.co/api/v2/pokemon/" + pokemon)
                 .then(res => res.json())
@@ -206,9 +209,12 @@ h4 {
                     document.getElementById("pokemon-info").innerHTML += ` <img src="${data.sprites.front_default}" width="300">`;
                 })
                 .catch(error => console.error('Erro ao criar post:', error))
-                .finally(() => console.log('Requisição finalizada'));;
+                .finally(() => console.log('Requisição finalizada'));
+                alert("Requisição finalizada")
             }
+            
         }
+        
     </script>
 </body>
 </html>
