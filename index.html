@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+    <style>
+        /* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Estilo do corpo */
+body {
+    background: linear-gradient(135deg, #3d7dcbff, #165a6fff);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Container da calculadora */
+form {
+    background: #2c3e50;
+    padding: 20px 30px;
+    border-radius: 12px;
+    box-shadow: 0px 8px 18px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+/* Título */
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #ecf0f1;
+}
+
+/* Labels */
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+    color: #ecf0f1;
+}
+
+/* Inputs */
+input[type="number"], input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    margin-bottom: 15px;
+    outline: none;
+    font-size: 16px;
+}
+
+/* Botões */
+button {
+    background: #27ae60;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    margin: 6px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #1e8449;
+    transform: scale(1.05);
+}
+
+/* Resultado */
+h4 {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#resultado {
+    margin-top: 10px;
+    padding: 12px;
+    background: #34495e;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+    color: #f1c40f;
+}
+    </style>
+</head>
+
+<body>
+    
+    <form>
+        <h1>Calculadora básica</h1><br>
+        <label for="num1">Informe o 1° número</label>
+        <input id="num1" type="number"> <br> <br>
+        <label for="num2">Informe o 2° número</label>
+        <input id="num2" type="number"> <br><br>
+        <button type="button" onclick="calcular('somar')">Somar</button>
+        <button type="button" onclick="calcular('subtrair')">Subtrair</button>
+        <button type="button" onclick="calcular('multiplicar')">Multiplicar</button>
+        <button type="button" onclick="calcular('dividir')">Dividir</button>
+        <br><br>
+        <!-- hr é uma linha horizontal -->
+        <hr>
+        <label for="pokemon">Informe o Pokemon</label>
+        <input id="pokemon" type="text"> <br><br>
+        <button type="button" onclick="inserirPokemon()">Inserir</button>
+        
+        <h4>Resultado:</h4>
+        <div id="resultado"></div>
+        <div id="pokemon-info"></div>
+    </form>
+
+    <script>
+        function calcular(operacao) {
+            //Pegar os valores do formulário
+            //let é variável, casting é transformar uma variável de um tipo pra outra
+            var num1 = parseFloat(document.getElementById('num1').value);
+            var num2 = parseFloat(document.getElementById('num2').value);
+            //Realiza os cálculos
+            switch (operacao) {
+                case 'somar':
+                    resultado = num1 + num2;
+                    break;
+                case 'subtrair':
+                    resultado = num1 - num2;
+                    break;
+                case 'multiplicar':
+                    resultado = num1 * num2;
+                    break;
+                case 'dividir':
+                    if (num2 != 0) {
+                        resultado = num1 / num2;
+                    } else {
+                        resultado = "Não é possível dividir por zero"
+                    }
+                    break;
+            }
+            fetch("https://pokeapi.co/api/v2/pokemon/" + resultado)
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data)
+                    document.getElementById("pokemon-info").innerHTML = '<p>Nome: ' + data.name + ', Altura: ' + data.height + ', Peso: ' + data.weight + '</p>';
+                    document.getElementById("pokemon-info").innerHTML += ` <img src="${data.sprites.front_default}" width="300">`;
+                })
+                .catch(error => chamaGatinho())
+                .finally(() => console.log('Requisição finalizada'));
+            //pegando o elemento pelo ID e falando q o texto contido é = resultado
+            document.getElementById('resultado').textContent = resultado;
+            
+            function chamaGatinho(){
+                fetch("https://api.thecatapi.com/v1/images/search")
+                    .then(res => res.json())
+                    .then(data => {
+                        // console.log(data)
+                        document.getElementById("pokemon-info").innerHTML = ` <br><img src="${data[0].url}" width="300">`;
+                    })
+                    .catch(error => console.error('Erro ao criar post:', error))
+                    .finally(() => console.log('Requisição finalizada'));
+            }
+            
+            }
+            //enquanto
+            while(num1 <10){
+                console.log(num1);
+                num1++;
+            }
+            //para
+            for(var i=0; i<10; i++){
+                console.log(i);
+            }
+
+            //vetores
+            var frutas = ['banana', 'maçã', 'laranja'];
+            frutas.push('uva'); //adiciona no final
+            frutas.push('manga'); //adiciona no final
+            frutas.pop(); //remove do final
+            console.log(frutas);
+
+            function inserirPokemon() {
+            let pokemon = document.getElementById('pokemon').value;
+            if(pokemon == ""){
+                 fetch("https://api.thecatapi.com/v1/images/search")
+                    .then(res => res.json())
+                    .then(data => {
+                        // console.log(data)
+                        document.getElementById("pokemon-info").innerHTML += ` <br><img src="${data[0].url}" width="300">`;
+                    })
+                    .catch(error => console.error('Erro ao criar post:', error))
+                    .finally(() => console.log('Requisição finalizada'));
+            }else{
+                fetch("https://pokeapi.co/api/v2/pokemon/" + pokemon)
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data)
+                    document.getElementById("pokemon-info").innerHTML += '<p>Nome: ' + data.name + ', Altura: ' + data.height + ', Peso: ' + data.weight + '</p>';
+                    document.getElementById("pokemon-info").innerHTML += ` <img src="${data.sprites.front_default}" width="300">`;
+                })
+                .catch(error => console.error('Erro ao criar post:', error))
+                .finally(() => console.log('Requisição finalizada'));;
+            }
+        }
+    </script>
+</body>
+</html>
